@@ -1,0 +1,23 @@
+.row
+  =render 'left_bar'
+  .col-md-9
+    = render 'layouts/header_tab'
+    - unless @blogs.empty?
+      - @blogs.each do |blog|
+        %article
+          %h3=link_to blog.title, blogs_path+"/#{blog.slug}"
+          .blog-info
+            Publié le
+            %span=l blog.created_at, format: "%B %d, %Y"
+            par
+            %span E-colos.com
+          #content
+            =truncate(strip_tags(blog.content), :length => 500, escape: false)
+          .read-more
+            =link_to "Lire la suite", blogs_path+"/#{blog.slug}", :class => "more-link btn btn-primary"
+      #paginator= paginate @blogs
+    - else
+      %p Aucun séjour ne correpond à vos critères de recherche
+
+
+  

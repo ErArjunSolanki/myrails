@@ -1,0 +1,43 @@
+%section
+  =render "admins/sidebar" if admin_signed_in?
+  =render "operators/sidebar" if operator_signed_in?
+  =render "users/sidebar" if user_signed_in?
+  .row
+    .col-md-12
+      %header.text-center
+        %h1
+          Liste de vos
+          %span.loud commentaires
+  .row
+    .col-md-12
+      %main
+        %table.table.table-striped
+          %thead
+            %tr
+              %th Nom
+              %th Email
+              %th Site web
+              %th Commentaire
+              %th Publié le
+              %th approuvé / non approuvé
+          %tbody
+            - @comments.order("id DESC").each do |comment|
+              %tr
+                %td
+                  %strong="#{comment.name}"
+                %td=comment.email
+                %td=comment.website
+                %td
+                  %a{class:"tbn btn-loud btn-xs", role: :button, tabindex: 0, data: {html: "true", container: :body, toggle: :popover, placement: :right, title: 'Commentaire', content: comment.comment, trigger: :focus}}
+                    %i.glyphicon.glyphicon-eye-open
+                %td="#{l(Time.at(comment.created_at.to_i).to_datetime, format: :short)}"
+                %td
+                  - if comment.status?
+                    = link_to comment_enable_disable_blog_path(:id => comment.blog_id, :comment_id => comment.id), title: t(:disable), :method => :get, :data => { :confirm => t(:are_you_sure) }, class: [:btn, "btn-default", "btn-xs"] do
+                      %i.glyphicon.glyphicon-ok
+                  - else
+                    = link_to comment_enable_disable_blog_path(:id => comment.blog_id, :comment_id => comment.id), title: t(:enable), :method => :get, :data => { :confirm => t(:are_you_sure) }, class: [:btn, "btn-default", "btn-xs"] do
+                      %i.glyphicon.glyphicon-remove
+
+
+      #paginator= paginate @comments

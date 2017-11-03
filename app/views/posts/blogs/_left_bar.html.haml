@@ -1,0 +1,8 @@
+.col-md-3
+  #blog-sidebar
+    %h4 Blogs récents
+    %ul.list-unstyled
+      - Blog.last(10).each do |item|
+        %li
+          =link_to item.title, blogs_path+"/#{item.slug}", class: current_page?(item) ? "active" : ""
+  =render "layouts/facebook_badge"

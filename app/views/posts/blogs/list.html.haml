@@ -1,0 +1,43 @@
+%section
+  =render "admins/sidebar" if admin_signed_in?
+  =render "operators/sidebar" if operator_signed_in?
+  =render "users/sidebar" if user_signed_in?
+  .row
+    .col-md-12
+      %header.text-center
+        %h1
+          Liste de vos
+          %span.loud blogs
+  .row
+    .col-md-12
+      %main
+        %table.table.table-striped
+          %thead
+            %tr
+              %th Titre
+              %th Publié le
+              %th
+              %th
+              %th
+              %th
+          %tbody
+            -#- @blogs.order("id DESC").each do |blog|
+            -#- @blogs.includes(:comments).order("comments.created_at desc").each do |blog|
+            - @blogs.sort_by(&:comments_count).reverse.each do |blog|
+              %tr
+                %td
+                  %strong="#{blog.title}"
+                %td="#{l(Time.at(blog.created_at.to_i).to_datetime, format: :short)}"
+                %td=link_to "(#{pluralize(blog.comments.approved.count, 'comment')})", comments_blog_path(blog), :method => :get
+                %td=link_to "(#{pluralize(blog.comments.unapproved.count, 'unapproved comment')})", comments_blog_path(blog), :method => :get
+                %td
+                  = link_to blog, class: [:tbn, "btn-loud", "btn-xs"] do
+                    %i.glyphicon.glyphicon-eye-open
+                %td
+                  - if admin_signed_in?
+                    = link_to edit_blog_path(blog), title: t(:edit) , class: [:btn, "btn-default", "btn-xs"] do
+                      %i.glyphicon.glyphicon-pencil
+                    = link_to blog_path(blog), title: t(:destroy), :method => :delete, :data => { :confirm => t(:are_you_sure) }, class: [:btn, "btn-default", "btn-xs"] do
+                      %i.glyphicon.glyphicon-trash
+
+      #paginator= paginate @blogs

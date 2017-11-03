@@ -1,0 +1,12 @@
+= simple_form_for(@blog) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :title
+    = f.input :content, as: :ckeditor
+    = f.input :publish
+  .form-inputs
+    =f.input :meta_title, label: "Balise meta title", placeholder: "Laissez vide si mode automatique"
+    =f.input :meta_desc, label: "Balise meta title", placeholder: "Laissez vide si mode automatique"
+  .form-actions
+    = f.button :submit

@@ -1,0 +1,20 @@
+- title @blog.meta_title.present? ? @blog.meta_title : @blog.title
+- description @blog.meta_desc.present? ? @blog.meta_desc : truncate(strip_tags(@blog.content), length: 150, separator: " ")
+.row
+  =render 'left_bar'
+  .col-md-9
+    = render 'layouts/header_tab'
+    %article
+      %h1= @blog.title
+      .blog-info
+        Publié le
+        %span=l @blog.created_at, format: "%B %d, %Y"
+        par
+        %span E-colos.com
+      -#%iframe{:allowtransparency => "true", :frameborder => "0", :scrolling => "no", :src => "http://www.facebook.com/plugins/like.php?href=#{root_url}blogs/#{@blog.slug}&layout=button&action=like&show_faces=false&share=true", :style => "border:none;overflow:hidden;height:21px;width:124px;"}
+      #content=raw @blog.content
+      =render 'comments'
+- if admin_signed_in?
+  = link_to 'Editer', edit_blog_path(@blog)
+  \|
+  = link_to 'Retour à la liste', blogs_path

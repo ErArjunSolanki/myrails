@@ -1,0 +1,22 @@
+.row
+  =render 'left_bar'
+  .col-md-9
+    - unless @posts.empty?
+      - @posts.each do |post|
+        %article
+          %h3=link_to post.title, posts_path+"/#{post.slug}"
+          .post-info
+            Published at
+            %span=l post.created_at, format: "%B %d, %Y"
+            By
+            %span Blogger
+          #content
+            =truncate(strip_tags(post.content), :length => 500, escape: false)
+          .read-more
+            =link_to "Read More", posts_path+"/#{post.slug}", :class => "more-link btn btn-primary"
+      #paginator= paginate @posts
+    - else
+      %p 
+
+
+  

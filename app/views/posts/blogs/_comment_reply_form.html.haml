@@ -1,0 +1,18 @@
+-if @comment.errors.full_messages.any?
+  - @comment.errors.full_messages.each do |error_message|
+    %p.comment-error=error_message if (@comment.errors.full_messages.first == error_message)
+%h4="laisser une réponse"
+%h5="Votre adresse de messagerie ne sera pas publiée. Les champs obligatoires sont indiqués avec <span>*</span>".html_safe
+= form_for @comment, :url => url_for(:controller => 'blogs', :action => 'add_comment') do |f|
+  = f.hidden_field :blog_id, :value => @blog.id
+  = f.hidden_field :root_id, :value =>  !@commentInfo.root_id.blank? ? @commentInfo.root_id : @commentInfo.id
+  = f.hidden_field :parent_id, :value => @commentInfo.id
+  = f.label :name, 'Nom <span>*</span>'.html_safe
+  = f.text_field :name, required: true
+  = f.label :email, 'Adresse de contact <span>*</span>'.html_safe
+  = f.text_field :email, required: true
+  = f.label :website, 'Site web'
+  = f.text_field :website
+  = f.label :comment, 'Commentaire <span>*</span>'.html_safe
+  = f.text_area :comment, required: true
+  =button_tag("Laisser un commentaire", type: 'submit', class: 'btn btn-primary')

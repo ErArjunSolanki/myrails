@@ -1,0 +1,16 @@
+- unless @blog.comments.empty?
+  - @blog.comments.approved.each do |comment|
+    .comment-box
+      .comment-info
+        .comment-user= "#{comment.name} dit:"
+        .comment-date=l comment.created_at, format: "%B %d, %Y"
+      .comment
+        =comment.comment
+      -#  - @commentInfo = comment
+      -#=button_tag("Répondre", class: 'reply-btn btn btn-primary')
+      -#.comment-reply
+      -#  =link_to("Annuler la réponse", 'javascript:;',class: 'reply-cancel')
+      -#  =render 'comment_reply_form', :object => @commentInfo
+
+.comment-form
+  =render 'comment_form'

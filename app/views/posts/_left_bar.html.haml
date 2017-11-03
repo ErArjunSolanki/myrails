@@ -1,0 +1,8 @@
+.col-md-3
+  #post-sidebar
+    %h4 Recent Post
+    %ul.list-unstyled
+      - Post.last(10).each do |item|
+        %li
+          =link_to item.title, posts_path+"/#{item.slug}", class: current_page?(item) ? "active" : ""
+
